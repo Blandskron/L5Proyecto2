@@ -1,0 +1,81 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Productos</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/productos.css' %}">
+</head>
+<body>
+    <h2>Productos</h2>
+
+    {% if user.is_authenticated %}
+        <p>Bienvenido, {{ user.username }}!</p>
+        <a href="{% url 'logout' %}">Cerrar sesión</a>
+        <br><br>
+
+        {% if permisos.puede_ver %}
+            <h3>Listado de productos:</h3>
+            <ul>
+                {% for producto in productos %}
+                    <li>{{ producto.nombre }} - Precio: {{ producto.precio }}</li>
+                    <img src="{{ producto.imagen.url }}" alt="{{ producto.nombre }}" width="60px">
+                    {% if permisos.puede_agregar %}
+                        <a href="{% url 'agregar_producto' %}">Agregar producto</a>
+                    {% endif %}
+                    {% if permisos.puede_cambiar %}
+                        <a href="{% url 'editar_producto' producto.id %}">Editar producto</a>
+                    {% endif %}
+                    {% if permisos.puede_eliminar %}
+                        <a href="{% url 'eliminar_producto' producto.id %}">Eliminar producto</a>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No tienes permisos para ver los productos.</p>
+        {% endif %}
+
+    {% else %}
+        <p>Debes iniciar sesión para acceder a esta página.</p>
+        <a href="{% url 'login' %}">Iniciar sesión</a>
+    {% endif %}
+</body>
+</html>
+
+
+
+<!-- 
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Productos</title>
+</head>
+<body>
+    <h2>Productos</h2>
+
+    {% if user.is_authenticated %}
+        <p>Bienvenido, {{ user.username }}!</p>
+        <a href="{% url 'login' %}">Cerrar sesión</a>
+        <br><br>
+
+        {% if permisos.puede_ver %}
+            <h3>Listado de productos:</h3>
+            <ul>
+                {% for producto in productos %}
+                    <li>{{ producto.nombre }} - Precio: {{ producto.precio }}</li>
+                    <img src="{{ producto.imagen.url }}" alt="{{ producto.nombre }}" width="60px">
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No tienes permisos para ver los productos.</p>
+        {% endif %}
+
+    {% else %}
+        <p>Debes iniciar sesión para acceder a esta página.</p>
+        <a href="{% url 'login' %}">Iniciar sesión</a>
+    {% endif %}
+</body>
+</html> -->
