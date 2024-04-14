@@ -92,3 +92,4 @@ def eliminar_producto(request, producto_id):
         return redirect('productos')
     else:
         return render(request, 'eliminar_producto.html', {'producto': producto})
+    
